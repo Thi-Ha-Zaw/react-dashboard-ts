@@ -17,6 +17,10 @@ module.exports = {
       },
     },
     extend: {
+      fontFamily: {
+        roboto : ["Roboto", "sans-serif"],
+        sans : ["Roboto Condensed", "sans-serif"]
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },

@@ -1,4 +1,39 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
 @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
-  
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .active {
+        @apply bg-slate-50;
+    }
+
+    .sidebar-link {
+        @apply flex items-center gap-3 rounded-lg px-3 py-2 transition-all;
+    }
+
+    .pagination {
+        @apply list-none inline-flex justify-end sm:justify-center items-center w-[250px] sm:w-auto;
+    }
+
+    .pagination .break {
+        @apply dark:text-white flex justify-center items-center px-3 border border-gray-400 font-normal cursor-pointer;
+    }
+
+    .pagination .page-num {
+        @apply dark:text-white flex justify-center items-center px-3 border border-gray-400 font-normal cursor-pointer;
+    }
+
+    .pagination .page-num-pre {
+        @apply dark:text-white flex justify-center items-center px-3 border border-gray-400 rounded-l font-normal cursor-pointer;
+    }
+
+    .pagination .page-num-next {
+        @apply dark:text-white flex justify-center items-center px-3 border border-gray-400 rounded-r font-normal cursor-pointer;
+    }
+
+    .pagination .active {
+        @apply bg-gray-900 text-white dark:bg-gray-400 dark:text-gray-50;
+    }
+}

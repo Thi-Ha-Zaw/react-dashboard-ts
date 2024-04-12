@@ -1,10 +1,12 @@
 import React from 'react'
-import { Button } from './components/ui/button'
+import { Toaster } from "@/components/ui/toaster";
+import Path from './route/Path'
 
 const App = () => {
   return (
-    <div>
-      <Button variant={"destructive"}>Hello</Button>
+    <div className=''>
+      <Toaster />
+      <Path />
     </div>
   )
 }
