@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import {
-    Bell,
-    CircleUser,
+   
     Home,
     LineChart,
-    Menu,
+   
     Package,
-    Package2,
-    Search,
+   
     ShoppingCart,
     Users,
 } from "lucide-react";
@@ -48,7 +46,7 @@ const DashboardSidebarBody = () => {
                 <div className=" overflow-hidden cursor-pointer">
                     <div
                         onClick={() => setIsOpen(!isOpen)}
-                        className=" flex justify-between items-center rounded-lg px-3 py-2 transition-all hover:text-primary"
+                        className=" flex justify-between items-center rounded-lg px-3 py-2 transition-all hover:text-primary dark:text-gray-300 dark:hover:bg-gray-700"
                     >
                         <div className="flex items-center gap-3">
                             <LineChart className="h-4 w-4" />
@@ -66,7 +64,7 @@ const DashboardSidebarBody = () => {
                     <div
                         className={`${
                             isOpen ? " h-36" : " h-0"
-                        } transition-all duration-500`}
+                        } transition-all duration-500 `}
                     >
                         <div className="flex flex-col gap-2 text-sm rounded-lg py-2 transition-all">
                             <NavLink

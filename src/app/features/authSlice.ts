@@ -1,6 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const initialState = {
+// type casting
+type authSlice = {
+    isChangePwDialog: boolean,
+    user: {}
+}
+
+const initialState : authSlice = {
     isChangePwDialog : false,
     user : {}
 }

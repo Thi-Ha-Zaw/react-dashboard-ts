@@ -1,5 +1,4 @@
-import React from "react";
-import { CircleUser, Search } from "lucide-react";
+import { CircleUser, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
@@ -9,14 +8,17 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
 import { FaPowerOff } from "react-icons/fa6";
 import DashboardPhoneSidebar from "./DashboardPhoneSidebar";
 import { useLogoutMutation } from "../../../app/service/authApi";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "../../ui/use-toast";
-import { useDispatch} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setChangePwDialog } from "../../../app/features/authSlice";
+
+import { useTheme } from "@/app/features/theme/theme-provider";
 
 const DashboardNavbar = () => {
     const token = Cookies.get("token");
@@ -28,6 +30,8 @@ const DashboardNavbar = () => {
     const { toast } = useToast();
 
     const nav = useNavigate();
+
+    const { setTheme } = useTheme();
 
     const handleLogout = async () => {
         const res = await logout(token);
@@ -57,32 +61,72 @@ const DashboardNavbar = () => {
                     </div>
                 </form> */}
             </div>
-            <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                    <Button
-                        variant="secondary"
-                        size="icon"
-                        className="rounded-full"
-                    >
-                        <CircleUser className="h-5 w-5" />
-                        <span className="sr-only">Toggle user menu</span>
-                    </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
 
-                    <DropdownMenuItem className=" cursor-pointer" onClick={() => dispatch(setChangePwDialog(true))}>Change password </DropdownMenuItem>
-                    <DropdownMenuItem className=" cursor-pointer">Profile</DropdownMenuItem>
-                    <DropdownMenuItem
-                        onClick={handleLogout}
-                        className=" flex gap-2 cursor-pointer"
-                    >
-                        <p>Logout</p>
-                        <FaPowerOff className="" />
-                    </DropdownMenuItem>
-                </DropdownMenuContent>
-            </DropdownMenu>
+            <div className=" flex gap-2 items-center">
+                <div className=" border-r pe-3">
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline" size="icon" className=" dark:bg-slate-50 text-slate-900 dark:hover:bg-slate-50 dark:hover:text-slate-900 dark:w-9 dark:h-9">
+                                <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                                <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 " />
+                                <span className="sr-only">Toggle theme</span>
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuItem onClick={() => setTheme("light")}>
+                                Light
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => setTheme("dark")}>
+                                Dark
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                                onClick={() => setTheme("system")}
+                            >
+                                System
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
+                <div>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button
+                                variant="secondary"
+                                size="icon"
+                                className="rounded-full"
+                            >
+                                <CircleUser className="h-5 w-5" />
+                                <span className="sr-only">
+                                    Toggle user menu
+                                </span>
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+
+                            <DropdownMenuItem
+                                className=" cursor-pointer"
+                                onClick={() =>
+                                    dispatch(setChangePwDialog(true))
+                                }
+                            >
+                                Change password{" "}
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className=" cursor-pointer">
+                                Profile
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                                onClick={handleLogout}
+                                className=" flex gap-2 cursor-pointer"
+                            >
+                                <p>Logout</p>
+                                <FaPowerOff className="" />
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
+            </div>
         </header>
     );
 };

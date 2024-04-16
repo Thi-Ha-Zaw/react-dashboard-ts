@@ -1,16 +1,13 @@
 import React, { useState } from "react";
 
-import { File, ListFilter, PlusCircle } from "lucide-react";
+import { ListFilter, PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 
 import {
     DropdownMenu,
-    DropdownMenuCheckboxItem,
     DropdownMenuContent,
     DropdownMenuRadioGroup,
     DropdownMenuRadioItem,
-    DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
@@ -18,7 +15,7 @@ import {
 
 import Cookies from "js-cookie";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
     useGetRolesQuery,
     useGetUsersQuery,
@@ -39,13 +36,12 @@ const UserPage = () => {
         useGetRolesQuery(token);
 
     const dispatch = useDispatch();
-    
 
     //utility filtering
     const [filter, setFilter] = useState({
         currentPage: 1, // Initialize the current page
         search: "", // Initialize searching
-        role: "", // Initialize role
+        role: "all", // Initialize role
         perPage: "", // Initialize role
     });
 
@@ -54,12 +50,12 @@ const UserPage = () => {
         token,
         page: filter.currentPage,
         keyword: filter.search,
-        role: filter.role,
+        role: filter.role == "all" ? "" : filter.role,
         perPage: filter.perPage,
     });
 
     // handle pagination number
-    const onPageChange = value => {
+    const onPageChange = (value) => {
         if (value >= 1 && value <= 250) {
             setFilter(pre => ({ ...pre, perPage: value }));
         } else {
@@ -67,10 +63,9 @@ const UserPage = () => {
         }
     };
 
-    const onInputChange = (value) => {
-        console.log(value)
-        setFilter(pre => ({ ...pre, search:value }))
-    }
+    const onInputChange = value => {
+        setFilter(pre => ({ ...pre, search: value }));
+    };
 
     const handlePageClick = ({ selected }) => {
         // The selected parameter contains the selected page index
@@ -100,7 +95,7 @@ const UserPage = () => {
                                 <Button
                                     variant="outline"
                                     size="sm"
-                                    className="h-8 gap-1"
+                                    className="h-8 gap-1 dark:bg-gray-800 dark:border-slate-700 dark:text-gray-50"
                                 >
                                     <ListFilter className="h-3.5 w-3.5" />
                                     <span className=" sm:not-sr-only sm:whitespace-nowrap">
@@ -122,6 +117,9 @@ const UserPage = () => {
                                         }))
                                     }
                                 >
+                                    <DropdownMenuRadioItem value="all">
+                                        All
+                                    </DropdownMenuRadioItem>
                                     {allRoles?.roles?.map((role, index) => (
                                         <DropdownMenuRadioItem
                                             key={index}
@@ -140,7 +138,7 @@ const UserPage = () => {
                                 <Button
                                     variant="outline"
                                     size="sm"
-                                    className="h-8 gap-1"
+                                    className="h-8 gap-1 dark:bg-gray-800 dark:border-slate-700 dark:text-gray-50 "
                                 >
                                     <ListFilter className="h-3.5 w-3.5" />
                                     <span className=" sm:not-sr-only sm:whitespace-nowrap">

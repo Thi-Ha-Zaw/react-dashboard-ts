@@ -46,6 +46,8 @@ const UserEditDialog = () => {
     const token = Cookies.get("token");
     const { isEditDialogOpen, currentUser } = useSelector(state => state?.user);
 
+    console.log(currentUser)
+
     const { register, handleSubmit, watch, reset } = useForm({
         defaultValues: {
             name: currentUser.name,

@@ -16,7 +16,11 @@ module.exports = {
         "2xl": "1400px",
       },
     },
+    
     extend: {
+      colors: {
+        dark :"hsl(240 10% 3.9%)"
+      },
       fontFamily: {
         roboto : ["Roboto", "sans-serif"],
         sans : ["Roboto Condensed", "sans-serif"]

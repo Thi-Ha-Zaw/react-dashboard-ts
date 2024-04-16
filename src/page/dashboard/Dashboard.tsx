@@ -6,7 +6,7 @@ import DashboardSidebar from "../../components/dashboard/layout/DashboardSidebar
 const Dashboard = () => {
     return (
         <>
-            <div className="grid min-h-screen w-full grid-cols-12 lg:grid-cols-[280px_1fr]">
+            <div className="grid min-h-screen w-full grid-cols-12 lg:grid-cols-[280px_1fr] dark:bg-gray-900">
                 <div className="hidden col-span-3 md:col-span-4 lg:col-auto border-r bg-muted/40 md:block">
                     <DashboardSidebar />
                 </div>

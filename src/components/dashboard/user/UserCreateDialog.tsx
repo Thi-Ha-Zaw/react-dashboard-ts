@@ -153,7 +153,7 @@ const UserCreateDialog = () => {
                                             role="combobox"
                                             aria-expanded={open}
                                             
-                                            className={` ${errors?.role && ' border-red-500'} w-full justify-between`}
+                                            className={` ${errors?.role && ' border-red-500'} w-full justify-between dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-50 dark:hover:text-slate-900`}
                                         >
                                             {value
                                                 ? data?.roles?.find(

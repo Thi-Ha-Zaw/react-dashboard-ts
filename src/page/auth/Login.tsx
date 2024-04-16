@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
     Card,
@@ -10,18 +10,24 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useLoginMutation } from "../../app/service/authApi";
 import { useToast } from "../../components/ui/use-toast";
-import { Toaster } from "@/components/ui/toaster";
 import { useNavigate } from "react-router-dom";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import Cookies from 'js-cookie';
-import Loading from "../../components/dashboard/utility/Loading";
 import LoaderSvg from "../../components/dashboard/utility/LoaderSvg";
 
+// type casting
+type Inputs = {
+    name: string
+    password: string,
+}
+
+
+
 const Login = () => {
-    const { register, handleSubmit, watch,reset } = useForm();
+    const { register, handleSubmit, reset } = useForm<Inputs>();
 
     const [login, { isLoading }] = useLoginMutation();
 
@@ -32,7 +38,7 @@ const Login = () => {
 
     const nav = useNavigate();
 
-    const onSubmit = async data => {
+    const onSubmit: SubmitHandler<Inputs> = async data => {
         const userData = await login(data);
         if (userData?.data) {
             Cookies.set("token", userData?.data?.token);
@@ -40,6 +46,7 @@ const Login = () => {
             nav("/dashboard");
         } else if (userData.error) {
             setErrors(userData.error?.data?.errors);
+            console.log(userData.error?.data?.errors)
             if (userData.error?.data?.errors?.[0]) {
                 toast({
                     title: "Something wrong",
