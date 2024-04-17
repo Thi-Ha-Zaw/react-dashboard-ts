@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 
@@ -13,9 +12,9 @@ const DashboardPhoneSidebar = () => {
                 <Button
                     variant="outline"
                     size="icon"
-                    className="shrink-0 md:hidden"
+                    className="shrink-0 md:hidden dark:bg-gray-900 dark:border-gray-700"
                 >
-                    <Menu className="h-5 w-5" />
+                    <Menu className="h-5 w-5 dark:text-gray-50" />
                     <span className="sr-only">Toggle navigation menu</span>
                 </Button>
             </SheetTrigger>

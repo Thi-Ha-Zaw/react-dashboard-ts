@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { useState } from "react";
 import {
     Dialog,
     DialogContent,
@@ -7,15 +6,12 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 import { Button } from "@/components/ui/button";
 
-
-import { useDispatch, useSelector } from "react-redux";
 import { useToast } from "@/components/ui/use-toast";
 import Cookies from "js-cookie";
 import { setChangePwDialog } from "../../../app/features/authSlice";
@@ -23,58 +19,62 @@ import { useForm } from "react-hook-form";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { useChangePasswordMutation } from "../../../app/service/authApi";
 import LoaderSvg from "../utility/LoaderSvg";
+import ErrorMessage from "@/components/error/ErrorMessage";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
+
+type PwErrors = {
+    old_password: string;
+    new_password: string;
+    password_confirmation: string;
+};
 
 const ChangePwDialog = () => {
+    const token = Cookies.get("token");
 
-    const token = Cookies.get("token")
-
-    const { register, handleSubmit, watch, reset } = useForm();
+    const { register, handleSubmit, reset } = useForm();
 
     const { toast } = useToast();
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
-    const { isChangePwDialog } = useSelector(state => state?.auth);
+    const { isChangePwDialog } = useAppSelector(state => state?.auth);
 
     const [isPwShow, setIsPwShow] = useState({
         oldPwShow: false,
         newPwShow: false,
-        confirmPwShow : false
-    })
+        confirmPwShow: false,
+    });
 
-    const [errors,setErrors] = useState({});
+    const [errors, setErrors] = useState<Partial<PwErrors>>({});
 
-    const [changePassword,{isLoading}] = useChangePasswordMutation();
+    const [changePassword, { isLoading }] = useChangePasswordMutation();
 
-    
-    
-    const onPwEdited = async(data) => {
-        console.log(data)
+    const onPwEdited = async data => {
+        console.log(data);
         const user = {
-            old_password : data?.old_password,
-            new_password : data?.new_password,
-            new_password_confirmation : data?.confirm_password,
-        }
+            old_password: data?.old_password,
+            new_password: data?.new_password,
+            new_password_confirmation: data?.confirm_password,
+        };
 
         const respond = await changePassword({ token, user });
-        console.log(respond)
+        console.log(respond);
 
         if (respond.data) {
             dispatch(setChangePwDialog(false));
             toast({
-                title : "Change password successfully"
-            })
+                title: "Change password successfully",
+            });
         } else {
-            setErrors(respond.error?.data?.errors)
+            setErrors(respond.error?.data?.errors);
         }
 
         reset();
-        
-    }
+    };
     return (
         <Dialog
             open={isChangePwDialog}
-            onOpenChange={() => dispatch(setChangePwDialog())}
+            onOpenChange={() => dispatch(setChangePwDialog(false))}
         >
             <DialogContent className="sm:max-w-[425px]">
                 <form onSubmit={handleSubmit(onPwEdited)}>
@@ -88,19 +88,31 @@ const ChangePwDialog = () => {
                     <div className=" grid gap-3 pt-5">
                         <div>
                             <div className=" flex items-center gap-3">
-                                <Label htmlFor="old_password">Old Password</Label>
+                                <Label htmlFor="old_password">
+                                    Old Password
+                                </Label>
                                 <div className=" relative w-full">
                                     <Input
                                         className={`${
-                                            errors?.old_password && "border-red-500"
+                                            errors?.old_password &&
+                                            "border-red-500 dark:border-2"
                                         }`}
                                         id="old_password"
                                         {...register("old_password")}
-                                        type={isPwShow.oldPwShow ? "text" : "password"}
+                                        type={
+                                            isPwShow.oldPwShow
+                                                ? "text"
+                                                : "password"
+                                        }
                                     />
                                     <p
                                         className=" cursor-pointer absolute top-3 right-3"
-                                        onClick={() => setIsPwShow(pre => ({...pre,oldPwShow : !isPwShow.oldPwShow}))}
+                                        onClick={() =>
+                                            setIsPwShow(pre => ({
+                                                ...pre,
+                                                oldPwShow: !isPwShow.oldPwShow,
+                                            }))
+                                        }
                                     >
                                         {isPwShow.oldPwShow ? (
                                             <AiFillEye className=" text-lg text-gray-600" />
@@ -111,26 +123,36 @@ const ChangePwDialog = () => {
                                 </div>
                             </div>
                             {errors?.old_password && (
-                                <p className=" text-end text-red-500 text-xs mt-1">
-                                    {errors?.old_password}
-                                </p>
+                                <ErrorMessage message={errors?.old_password} />
                             )}
                         </div>
                         <div>
                             <div className=" flex items-center gap-3">
-                                <Label htmlFor="new_password">New  Password</Label>
+                                <Label htmlFor="new_password">
+                                    New Password
+                                </Label>
                                 <div className=" relative w-full">
                                     <Input
                                         className={`${
-                                            errors?.new_password && "border-red-500"
+                                            errors?.new_password &&
+                                            "border-red-500 dark:border-2"
                                         }`}
                                         id="new_password"
                                         {...register("new_password")}
-                                        type={isPwShow.newPwShow ? "text" : "password"}
+                                        type={
+                                            isPwShow.newPwShow
+                                                ? "text"
+                                                : "password"
+                                        }
                                     />
                                     <p
                                         className=" cursor-pointer absolute top-3 right-3"
-                                        onClick={() => setIsPwShow(pre => ({...pre,newPwShow : !isPwShow.newPwShow}))}
+                                        onClick={() =>
+                                            setIsPwShow(pre => ({
+                                                ...pre,
+                                                newPwShow: !isPwShow.newPwShow,
+                                            }))
+                                        }
                                     >
                                         {isPwShow.newPwShow ? (
                                             <AiFillEye className=" text-lg text-gray-600" />
@@ -141,27 +163,38 @@ const ChangePwDialog = () => {
                                 </div>
                             </div>
                             {errors?.new_password && (
-                                <p className=" text-end text-red-500 text-xs mt-1">
-                                    {errors?.new_password}
-                                </p>
+                                <ErrorMessage message={errors?.new_password} />
                             )}
                         </div>
 
                         <div>
                             <div className=" flex items-center ">
-                                <Label htmlFor="confirm_password">Confirm Password</Label>
+                                <Label htmlFor="confirm_password">
+                                    Confirm Password
+                                </Label>
                                 <div className=" relative w-full">
                                     <Input
                                         className={`${
-                                            errors?.password_confirmation && "border-red-500"
+                                            errors?.password_confirmation &&
+                                            "border-red-500"
                                         }`}
                                         id="confirm_password"
                                         {...register("confirm_password")}
-                                        type={isPwShow.confirmPwShow ? "text" : "password"}
+                                        type={
+                                            isPwShow.confirmPwShow
+                                                ? "text"
+                                                : "password"
+                                        }
                                     />
                                     <p
                                         className=" cursor-pointer absolute top-3 right-3"
-                                        onClick={() => setIsPwShow(pre => ({...pre,confirmPwShow : !isPwShow.confirmPwShow}))}
+                                        onClick={() =>
+                                            setIsPwShow(pre => ({
+                                                ...pre,
+                                                confirmPwShow:
+                                                    !isPwShow.confirmPwShow,
+                                            }))
+                                        }
                                     >
                                         {isPwShow.confirmPwShow ? (
                                             <AiFillEye className=" text-lg text-gray-600" />
@@ -172,9 +205,9 @@ const ChangePwDialog = () => {
                                 </div>
                             </div>
                             {errors?.password_confirmation && (
-                                <p className=" text-end text-red-500 text-xs mt-1">
-                                    {errors?.password_confirmation}
-                                </p>
+                                <ErrorMessage
+                                    message={errors?.password_confirmation}
+                                />
                             )}
                         </div>
                     </div>

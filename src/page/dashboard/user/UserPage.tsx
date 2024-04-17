@@ -27,6 +27,13 @@ import PaginationUI from "../../../components/dashboard/pagination/PaginationUI"
 import DashboardTitle from "../../../components/dashboard/layout/DashboardTitle";
 import SearchBar from "../../../components/dashboard/utility/SearchBar";
 
+type Filter = {
+    currentPage: number; 
+    search: string; 
+    role: string; 
+    perPage: string; 
+};
+
 const UserPage = () => {
     //get token from Cookies
     const token = Cookies.get("token");
@@ -38,7 +45,7 @@ const UserPage = () => {
     const dispatch = useDispatch();
 
     //utility filtering
-    const [filter, setFilter] = useState({
+    const [filter, setFilter] = useState<Partial<Filter>>({
         currentPage: 1, // Initialize the current page
         search: "", // Initialize searching
         role: "all", // Initialize role
@@ -55,19 +62,19 @@ const UserPage = () => {
     });
 
     // handle pagination number
-    const onPageChange = (value) => {
-        if (value >= 1 && value <= 250) {
+    const onPageChange = (value: string): void => {
+        if (value >= "1" && value <= "250") {
             setFilter(pre => ({ ...pre, perPage: value }));
         } else {
             setFilter(pre => ({ ...pre, perPage: "10" }));
         }
     };
 
-    const onInputChange = value => {
+    const onInputChange = (value: string):void => {
         setFilter(pre => ({ ...pre, search: value }));
     };
 
-    const handlePageClick = ({ selected }) => {
+    const handlePageClick = ({ selected } : {selected : number}):void => {
         // The selected parameter contains the selected page index
         const nextPage = selected + 1;
         setFilter(pre => ({ ...pre, currentPage: nextPage })); // Update the current page

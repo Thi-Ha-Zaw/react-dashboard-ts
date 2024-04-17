@@ -26,6 +26,7 @@ type Inputs = {
 
 
 
+
 const Login = () => {
     const { register, handleSubmit, reset } = useForm<Inputs>();
 
@@ -33,7 +34,7 @@ const Login = () => {
 
     const { toast } = useToast();
 
-    const [errors, setErrors] = useState({});
+    const [errors, setErrors] = useState<Partial<Inputs>>({});
     const [showPw, setShowPw] = useState(false);
 
     const nav = useNavigate();
@@ -58,7 +59,7 @@ const Login = () => {
     };
 
     return (
-        <div className=" w-full h-screen flex justify-center items-center">
+        <div className=" w-full bg-gray-900 h-screen flex justify-center items-center">
           
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Card className="w-full max-w-sm">

@@ -1,21 +1,17 @@
-import React from "react";
-import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table";
+import { TableCell, TableRow } from "@/components/ui/table";
 import DeleteBtn from "../utility/DeleteBtn";
 import EditBtn from "../utility/EditBtn";
-import { useDispatch } from "react-redux";
-import { setCurrentUser, setDeleteDialogOpen, setEditDialogOpen } from "../../../app/features/userSlice";
 
-const UserTableRow = ({ user }) => {
+import {
+    setCurrentUser,
+    setDeleteDialogOpen,
+    setEditDialogOpen,
+} from "../../../app/features/userSlice";
+import { useAppDispatch } from "@/app/hooks";
+import { User } from "./type";
 
-    const dispatch = useDispatch();
+const UserTableRow = ({ user }: { user: User }) => {
+    const dispatch = useAppDispatch();
 
     const handleEdit = () => {
         dispatch(setCurrentUser(user));

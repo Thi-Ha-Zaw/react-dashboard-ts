@@ -31,32 +31,38 @@ import {
     useCreateUserMutation,
     useGetRolesQuery,
 } from "../../../app/service/userApi";
-import { useDispatch, useSelector } from "react-redux";
 import { useToast } from "@/components/ui/use-toast";
 import LoaderSvg from "../utility/LoaderSvg";
 import Cookies from "js-cookie";
 import { setCreateDialogOpen } from "../../../app/features/userSlice";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import ErrorMessage from "@/components/error/ErrorMessage";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
+import { Errors, User } from "./type";
+
+
+
+
 
 const UserCreateDialog = () => {
     const token = Cookies.get("token");
-    const { register, handleSubmit, watch, reset } = useForm();
+    const { register, handleSubmit, watch, reset } = useForm<Partial<User>>();
 
     const { data, isLoading: isroleLoading } = useGetRolesQuery(token);
     const [createUser, { isLoading }] = useCreateUserMutation();
 
-    const { isCreateDialogOpen } = useSelector(state => state?.user);
-    const dispatch = useDispatch();
+    const { isCreateDialogOpen } = useAppSelector(state => state?.user);
+    const dispatch = useAppDispatch();
 
     const { toast } = useToast();
 
-    const [errors, setErrors] = useState({});
+    const [errors, setErrors] = useState<Errors>({});
     const [showPw, setShowPw] = useState(false);
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState("");
 
-    const onNewUserAdded = async data => {
+    const onNewUserAdded: SubmitHandler<User> = async data => {
         const user = {
             name: data?.name,
             password: data?.password,
@@ -64,8 +70,8 @@ const UserCreateDialog = () => {
         };
         const respond = await createUser({ user, token });
         console.log(respond);
-        if (respond?.data) {
-            setErrors({})
+        if (respond.data) {
+            setErrors({});
             dispatch(setCreateDialogOpen(false));
             toast({
                 title: "New user have been added",
@@ -80,7 +86,7 @@ const UserCreateDialog = () => {
     return (
         <Dialog
             open={isCreateDialogOpen}
-            onOpenChange={() => dispatch(setCreateDialogOpen())}
+            onOpenChange={() => dispatch(setCreateDialogOpen(false))}
         >
             <DialogContent className="sm:max-w-[425px]">
                 <form onSubmit={handleSubmit(onNewUserAdded)}>
@@ -91,9 +97,9 @@ const UserCreateDialog = () => {
                         </DialogDescription>
                     </DialogHeader>
 
-                    <div className=" grid gap-3 ps-2 pt-5">
+                    <div className=" grid gap-4 sm:gap-3 ps-0 sm:ps-2 pt-5">
                         <div>
-                            <div className=" flex items-center gap-8">
+                            <div className=" flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-8">
                                 <Label htmlFor="name">Name</Label>
                                 <Input
                                     className={`${
@@ -104,14 +110,10 @@ const UserCreateDialog = () => {
                                     {...register("name")}
                                 />
                             </div>
-                            {errors?.name && (
-                                <p className=" text-end text-red-500 text-xs mt-1">
-                                    {errors?.name}
-                                </p>
-                            )}
+                            {errors?.name && <ErrorMessage message={errors?.name} />}
                         </div>
                         <div>
-                            <div className=" flex items-center gap-3">
+                            <div className=" flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-2">
                                 <Label htmlFor="password">Password</Label>
                                 <div className=" relative w-full">
                                     <Input
@@ -134,15 +136,11 @@ const UserCreateDialog = () => {
                                     </p>
                                 </div>
                             </div>
-                            {errors?.password && (
-                                <p className=" text-end text-red-500 text-xs mt-1">
-                                    {errors?.password}
-                                </p>
-                            )}
+                            {errors?.password && <ErrorMessage message={errors?.password} />}
                         </div>
 
                         <div>
-                            <div className=" flex items-center gap-8">
+                            <div className=" flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-8">
                                 <Label className="" htmlFor="roles">
                                     Roles
                                 </Label>
@@ -152,8 +150,10 @@ const UserCreateDialog = () => {
                                             variant="outline"
                                             role="combobox"
                                             aria-expanded={open}
-                                            
-                                            className={` ${errors?.role && ' border-red-500'} w-full justify-between dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-50 dark:hover:text-slate-900`}
+                                            className={` ${
+                                                errors?.role &&
+                                                " border-red-500"
+                                            } w-full justify-between dark:bg-gray-900 dark:text-gray-400 dark:hover:bg-gray-900 dark:hover:text-gray-400`}
                                         >
                                             {value
                                                 ? data?.roles?.find(
@@ -207,16 +207,16 @@ const UserCreateDialog = () => {
                                     </PopoverContent>
                                 </Popover>
                             </div>
-                            {errors?.role && (
-                                <p className=" text-end text-red-500 text-xs mt-1">
-                                    {errors?.role}
-                                </p>
-                            )}
+                            {errors?.role && <ErrorMessage message={errors?.role} />}
                         </div>
                     </div>
 
-                    <DialogFooter className=" mt-2">
-                        <Button className=" flex items-center gap-2" type="submit" disabled={isLoading}>
+                    <DialogFooter className=" mt-4 sm:mt-2 ">
+                        <Button
+                            className=" flex items-center gap-2"
+                            type="submit"
+                            disabled={isLoading}
+                        >
                             <LoaderSvg isLoading={isLoading} />
                             <span>Save changes</span>
                         </Button>

@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
     Table,
     TableBody,
@@ -7,30 +6,13 @@ import {
     TableRow,
 } from "@/components/ui/table";
 
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-
 import SkeletonTableBody from "../../components/dashboard/skeleton/SkeletonTableBody";
-import { TableCell } from "../../components/ui/table";
-import { useDispatch, useSelector } from "react-redux";
+
 import DashboardTitle from "../../components/dashboard/layout/DashboardTitle";
 
 const DashboardIndex = () => {
-
-
     return (
         <>
-            
-
             <DashboardTitle title={"Inventory"} />
             <div
                 className=" rounded-lg border border-dashed shadow-sm"
@@ -47,7 +29,7 @@ const DashboardIndex = () => {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                       <SkeletonTableBody cell={4} />
+                        <SkeletonTableBody cell={4} />
                     </TableBody>
                 </Table>
             </div>

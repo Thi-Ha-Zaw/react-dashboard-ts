@@ -1,17 +1,12 @@
-import React from "react";
 import {
     AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
     AlertDialogContent,
     AlertDialogDescription,
     AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogTitle,
-    AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { useDispatch, useSelector } from "react-redux";
 import {
     setCurrentUser,
     setDeleteDialogOpen,
@@ -20,16 +15,17 @@ import Cookies from "js-cookie";
 import { useDeleteUserMutation } from "../../../app/service/userApi";
 import { useToast } from "@/components/ui/use-toast";
 import LoaderSvg from "../utility/LoaderSvg";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
 
 const UserDeleteDialog = () => {
     const token = Cookies.get("token");
 
     const [deleteUser, { isLoading }] = useDeleteUserMutation();
 
-    const { isDeleteDialogOpen, currentUser } = useSelector(
+    const { isDeleteDialogOpen, currentUser } = useAppSelector(
         state => state?.user
     );
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const { toast } = useToast();
 
@@ -53,7 +49,7 @@ const UserDeleteDialog = () => {
         <AlertDialog open={isDeleteDialogOpen}>
             <AlertDialogContent>
                 <AlertDialogHeader>
-                    <AlertDialogTitle>
+                    <AlertDialogTitle className=" dark:text-gray-300">
                         Are you absolutely sure?
                     </AlertDialogTitle>
                     <AlertDialogDescription>
@@ -65,6 +61,7 @@ const UserDeleteDialog = () => {
                 <AlertDialogFooter>
                     <Button
                         variant="outline"
+                        className=" dark:text-gray-300"
                         onClick={() => dispatch(setDeleteDialogOpen(false))}
                     >
                         Cancel

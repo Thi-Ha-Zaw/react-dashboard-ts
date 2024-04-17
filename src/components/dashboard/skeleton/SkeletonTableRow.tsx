@@ -2,7 +2,7 @@ import React from "react";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
 
-const SkeletonTableRow = ({ cell }) => {
+const SkeletonTableRow = ({ cell } : {cell : number}) => {
     const skeletonCells = Array.from({ length: cell }, (v, i) => i);
 
     return (

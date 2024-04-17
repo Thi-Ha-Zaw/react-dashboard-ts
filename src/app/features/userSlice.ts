@@ -6,8 +6,9 @@ type userSlice = {
     isEditDialogOpen: boolean;
     isDeleteDialogOpen: boolean;
     currentUser: {
+        id : number,
         name: string,
-        password: string,
+        password?: string,
         role: string[],
         
     };
@@ -18,8 +19,8 @@ const initialState : userSlice = {
     isEditDialogOpen: false,
     isDeleteDialogOpen: false,
     currentUser: {
+        id : 1,
         name : "",
-        password : "",
         role : [""],
     },
 };

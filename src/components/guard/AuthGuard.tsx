@@ -1,28 +1,37 @@
-import React, { useEffect } from "react";
+
 import { useProfileQuery } from "../../app/service/authApi";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import Loading from "../dashboard/utility/Loading";
-import Cookies from 'js-cookie'
+import Cookies from "js-cookie";
+import { ImportIcon } from "lucide-react";
+import { useEffect } from "react";
+import { Children } from "./types";
+import { useAppDispatch } from "@/app/hooks";
+import { userInfo } from "@/app/features/authSlice";
 
 
-const AuthGuard = ({ children }) => {
+
+const AuthGuard = ({ children }: Children) => {
     const token = Cookies.get("token");
 
     const { data, isError, isLoading } = useProfileQuery(token);
 
-    const nav = useNavigate();
+    
+    const dispatch = useAppDispatch();
+
 
     useEffect(() => {
         if (isError) {
-           Cookies.remove("token");
-           Cookies.remove("user");
-        } 
+            Cookies.remove("token");
+            Cookies.remove("user");
+        }
+        dispatch(userInfo(data?.user))
     }, [data, isError]);
 
     if (isLoading) {
         return <Loading />;
-  }
-  
+    }
+
     if (isError) {
         return <Navigate to={"/"} />;
     }

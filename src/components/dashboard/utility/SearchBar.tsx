@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 
-const SearchBar = ({ onInputChange }) => {
+type onInputChange = (s : string) => void;
+
+const SearchBar = ({ onInputChange } : {onInputChange : onInputChange}) => {
     const [search, setSearch] = useState("");
    
 
@@ -22,7 +24,7 @@ const SearchBar = ({ onInputChange }) => {
                 onChange={e =>  setSearch(e.target.value)}
                 type="text"
                 placeholder="Search by name"
-                className=" w-[300px] sm:w-[200px] lg:w-[350px]"
+                className=" w-[300px] sm:w-[200px] lg:w-[350px] dark:border-gray-700"
             />
         </div>
     );

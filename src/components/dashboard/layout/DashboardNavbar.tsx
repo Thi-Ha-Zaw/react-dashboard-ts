@@ -15,15 +15,15 @@ import { useLogoutMutation } from "../../../app/service/authApi";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "../../ui/use-toast";
-import { useDispatch, useSelector } from "react-redux";
 import { setChangePwDialog } from "../../../app/features/authSlice";
 
 import { useTheme } from "@/app/features/theme/theme-provider";
+import { useAppDispatch } from "@/app/hooks";
 
 const DashboardNavbar = () => {
     const token = Cookies.get("token");
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const [logout] = useLogoutMutation();
 

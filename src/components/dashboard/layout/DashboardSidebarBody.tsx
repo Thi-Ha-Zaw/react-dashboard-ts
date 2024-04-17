@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
    
     Home,
@@ -14,9 +14,14 @@ import { Badge } from "@/components/ui/badge";
 import { FaChevronRight } from "react-icons/fa6";
 
 import { Link, NavLink, useLocation } from "react-router-dom";
+import { useAppSelector } from "@/app/hooks";
 
 const DashboardSidebarBody = () => {
+
     const [isOpen, setIsOpen] = useState(false);
+
+    const {user} = useAppSelector(state => state.auth)
+
 
     const { pathname } = useLocation();
     return (
@@ -39,14 +44,14 @@ const DashboardSidebarBody = () => {
                     </Badge>
                 </NavLink>
                 
-                <NavLink to={"/dashboard/user"} className=" sidebar-link">
+                <NavLink to={"/dashboard/user"} className={` sidebar-link ${user?.name != 'admin' && 'hidden'}`}>
                     <Users className="h-4 w-4" />
                     Users
                 </NavLink>
                 <div className=" overflow-hidden cursor-pointer">
                     <div
                         onClick={() => setIsOpen(!isOpen)}
-                        className=" flex justify-between items-center rounded-lg px-3 py-2 transition-all hover:text-primary dark:text-gray-300 dark:hover:bg-gray-700"
+                        className=" flex justify-between items-center rounded-lg px-3 py-2 transition-all hover:text-primary dark:text-gray-400 dark:hover:bg-gray-700"
                     >
                         <div className="flex items-center gap-3">
                             <LineChart className="h-4 w-4" />

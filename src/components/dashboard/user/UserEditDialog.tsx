@@ -39,16 +39,19 @@ import {
     setCurrentUser,
     setEditDialogOpen,
 } from "../../../app/features/userSlice";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
+import { Errors, User } from "./type";
+
 
 const UserEditDialog = () => {
     const token = Cookies.get("token");
-    const { isEditDialogOpen, currentUser } = useSelector(state => state?.user);
+    const { isEditDialogOpen, currentUser } = useAppSelector(state => state?.user);
 
     console.log(currentUser)
 
-    const { register, handleSubmit, watch, reset } = useForm({
+    const { register, handleSubmit, reset } = useForm<Partial<User>>({
         defaultValues: {
             name: currentUser.name,
         },
@@ -57,21 +60,21 @@ const UserEditDialog = () => {
     const { data, isLoading: isroleLoading } = useGetRolesQuery(token);
     const [editUser, { isLoading }] = useEditUserMutation();
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const { toast } = useToast();
 
-    const [errors, setErrors] = useState({});
+    const [errors, setErrors] = useState<Errors>({});
     const [showPw, setShowPw] = useState(false);
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(currentUser?.role[0] || "");
 
-    const onUserEdited = async data => {
+    const onUserEdited: SubmitHandler<User> = async data => {
         console.log(data, value);
 
         const formData = new FormData();
         formData.append("name", data.name);
-        formData.append("password", data.password);
+        formData.append("password", data?.password);
         formData.append("role", value);
         formData.append("id", currentUser?.id);
 
@@ -111,7 +114,7 @@ const UserEditDialog = () => {
     return (
         <Dialog
             open={isEditDialogOpen}
-            onOpenChange={() => dispatch(setEditDialogOpen())}
+            onOpenChange={() => dispatch(setEditDialogOpen(false))}
         >
             <DialogContent className="sm:max-w-[425px]">
                 <form onSubmit={handleSubmit(onUserEdited)}>
@@ -186,14 +189,14 @@ const UserEditDialog = () => {
                                             className={` ${
                                                 errors?.role &&
                                                 " border-red-500"
-                                            } w-full justify-between`}
+                                            } w-full justify-between dark:bg-gray-900 dark:text-gray-400 dark:hover:bg-gray-900 dark:hover:text-gray-400`}
                                         >
                                             {value
                                                 ? data?.roles?.find(
                                                       role => role === value
                                                   )
                                                 : "Select user..."}
-                                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50 " />
                                         </Button>
                                     </PopoverTrigger>
                                     <PopoverContent className="w-[200px] p-0">

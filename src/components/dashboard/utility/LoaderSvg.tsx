@@ -1,6 +1,5 @@
-import React from "react";
 
-const LoaderSvg = ({isLoading}) => {
+const LoaderSvg = ({isLoading} : {isLoading : boolean}) => {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"

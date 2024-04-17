@@ -1,4 +1,4 @@
-import React from "react";
+
 import {
     Table,
     TableBody,
@@ -11,11 +11,13 @@ import UserTableRow from "./UserTableRow";
 import UserDeleteDialog from "./UserDeleteDialog";
 import UserCreateDialog from "./UserCreateDialog";
 import UserEditDialog from "./UserEditDialog";
-import { useSelector } from "react-redux";
 import EmptySate from "../utility/EmptySate";
+import { useAppSelector } from "@/app/hooks";
+import { Users } from "./type";
 
-const UserTable = ({ users, isLoading }) => {
-    const { isEditDialogOpen } = useSelector(state => state?.user);
+
+const UserTable = ({ users, isLoading } : Users) => {
+    const { isEditDialogOpen } = useAppSelector(state => state?.user);
     return (
         <div
             className=" rounded-lg border border-dashed shadow-sm"

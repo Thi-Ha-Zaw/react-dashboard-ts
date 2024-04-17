@@ -1,7 +1,6 @@
-import React from "react";
 import SkeletonTableRow from "./SkeletonTableRow";
 
-const SkeletonTableBody = ({cell}) => {
+const SkeletonTableBody = ({cell} : {cell : number}) => {
     const skeletons = Array.from({ length: 5 }, (v, i) => i);
     return (
         <>
