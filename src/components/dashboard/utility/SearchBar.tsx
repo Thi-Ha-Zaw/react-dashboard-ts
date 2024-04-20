@@ -24,7 +24,7 @@ const SearchBar = ({ onInputChange } : {onInputChange : onInputChange}) => {
                 onChange={e =>  setSearch(e.target.value)}
                 type="text"
                 placeholder="Search by name"
-                className=" w-[300px] sm:w-[200px] lg:w-[350px] dark:border-gray-700"
+                className=" w-[300px] sm:w-[200px] lg:w-[350px] dark:border-0 dark:focus:ring-0 dark:shadow-sm dark:shadow-gray-300"
             />
         </div>
     );

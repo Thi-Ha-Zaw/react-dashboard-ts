@@ -59,7 +59,7 @@ const Login = () => {
     };
 
     return (
-        <div className=" w-full bg-gray-900 h-screen flex justify-center items-center">
+        <div className=" w-full dark:bg-gray-900 h-screen flex justify-center items-center">
           
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Card className="w-full max-w-sm">

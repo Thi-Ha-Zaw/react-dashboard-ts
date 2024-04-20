@@ -51,7 +51,7 @@ const DashboardSidebarBody = () => {
                 <div className=" overflow-hidden cursor-pointer">
                     <div
                         onClick={() => setIsOpen(!isOpen)}
-                        className=" flex justify-between items-center rounded-lg px-3 py-2 transition-all hover:text-primary dark:text-gray-400 dark:hover:bg-gray-700"
+                        className=" flex justify-between items-center rounded-lg px-3 py-2 transition-all hover:text-primary dark:text-gray-300 dark:hover:bg-gray-700"
                     >
                         <div className="flex items-center gap-3">
                             <LineChart className="h-4 w-4" />
